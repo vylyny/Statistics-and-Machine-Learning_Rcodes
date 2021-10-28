@@ -1,5 +1,5 @@
 # T1: Classification of Leukemia Samples based on 20 genes selected from the training data
-### Team members: Vylyny, XXX and XXX
+
 ### Model used: Lasso penalized logistic regression
 This Rscript outputs the predicted cell types for the held-out dataset using LASSO-LR and 20 most predictive genes.
 
