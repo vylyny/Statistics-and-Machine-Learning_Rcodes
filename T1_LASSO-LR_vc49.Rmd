@@ -1,0 +1,200 @@
+---
+title: "Team1"
+author: "lyny"
+date: "October 26, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#https://www.analyticsvidhya.com/blog/2016/02/multinomial-ordinal-logistic-regression/
+ setwd("Y:/StatisticalLearning/TeamAssignment_1")
+data=read.csv("Problem1_expressionMatrix.txt", sep="")
+```
+```{r}
+#install packages
+library(glmnet)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+mydata= t(data) #transpose
+mydata=cbind(phenotype=rownames(mydata),data.frame(mydata,row.names=NULL))
+mydata=separate(data=mydata,col=phenotype,into= c("cell_type"))
+mydata$cell_type=as.factor(as.character(mydata$cell_type))
+table(mydata$cell_type)
+```
+
+
+```{r}
+x=as.matrix(mydata[,-1])
+x_standardize= apply(x,2,scale)
+y=mydata$cell_type
+```
+
+############----------------LASSO Multinomial Logiistic Regression
+
+
+
+```{r}
+
+```
+
+```{r}
+set.seed(123)
+cvfit=cv.glmnet(x_standardize, y, family="multinomial", type.multinomial = "grouped", parallel = TRUE,nfolds = 4,type.measure = "class",alpha = 1,standardize =FALSE)
+plot(cvfit)
+```
+```{r}
+set.seed(123)
+cvfit_ridge=cv.glmnet(x_standardize, y, family="multinomial", type.multinomial = "grouped", parallel = TRUE,nfolds = 4,type.measure = "mse",alpha = 0,standardize =FALSE)
+plot(cvfit_ridge)
+```
+
+```{r}
+set.seed(123)
+cvfit_elastic=cv.glmnet(x_standardize, y, family="multinomial", type.multinomial = "grouped", parallel = TRUE,nfolds = 4,type.measure = "mse",alpha = 0.5,standardize =FALSE)
+plot(cvfit_elastic)
+cvfit_elastic$cvm[cvfit_elastic$lambda==cvfit_elastic$lambda.1se]
+```
+
+#fitting to the whole data set
+
+```{r}
+cvfit$cvm[cvfit$lambda==cvfit$lambda.1se]
+fit<- glmnet(x_standardize, y, family="multinomial", type.multinomial = "grouped",alpha = 1,standardize = FALSE,lambda = cvfit$lambda.1se)
+```
+
+```{r}
+cvfit$cvm[cvfit$lambda==cvfit$lambda.1se]
+fit<- glmnet(x_standardize, y, family="multinomial", type.multinomial = "grouped",alpha = 1,standardize = FALSE,lambda = cvfit$lambda.1se)
+```
+
+```{r}
+#best predictors for all models
+BCR=as.data.frame(as.matrix(fit$beta[[1]]))
+E2A=as.data.frame(as.matrix(fit$beta[[2]]))
+Hyperdip=as.data.frame(as.matrix(fit$beta[[3]]))
+MLL=as.data.frame(as.matrix(fit$beta[[4]]))
+T_ALL=as.data.frame(as.matrix(fit$beta[[5]]))
+TEL_AML1=as.data.frame(as.matrix(fit$beta[[6]]))
+
+BCR$abs=abs(BCR$s0)
+BCR_notzero=BCR[BCR$abs!=0,]
+BCR_notzero$rel_impt=BCR_notzero$abs/sum(BCR_notzero$abs)
+BCR_20=(BCR_notzero[order(BCR_notzero$rel_impt,decreasing = T),])[1:20,]
+
+E2A$abs=abs(E2A$s0)
+E2A_notzero=E2A[E2A$abs!=0,]
+E2A_notzero$rel_impt=E2A_notzero$abs/sum(E2A_notzero$abs)
+E2A_20=(E2A_notzero[order(E2A_notzero$rel_impt,decreasing = T),])[1:20,]
+
+
+Hyperdip$abs=abs(Hyperdip$s0)
+Hyperdip_notzero=Hyperdip[Hyperdip$abs!=0,]
+Hyperdip_notzero$rel_impt=Hyperdip_notzero$abs/sum(Hyperdip_notzero$abs)
+Hyperdip_20=(Hyperdip_notzero[order(Hyperdip_notzero$rel_impt,decreasing = T),])[1:20,]
+
+MLL$abs=abs(MLL$s0)
+MLL_notzero=(MLL[order(MLL$abs,decreasing = T),])[1:20,]
+MLL_notzero$rel_impt=MLL_notzero$abs/sum(MLL_notzero$abs)
+MLL_20=(MLL_notzero[order(MLL_notzero$rel_impt,decreasing = T),])[1:20,]
+
+T_ALL$abs=abs(T_ALL$s0)
+T_ALL_notzero=(T_ALL[order(T_ALL$abs,decreasing = T),])[1:20,]
+T_ALL_notzero$rel_impt=T_ALL_notzero$abs/sum(T_ALL_notzero$abs)
+T_ALL_20=(T_ALL_notzero[order(T_ALL_notzero$rel_impt,decreasing = T),])[1:20,]
+
+TEL_AML1$abs=abs(TEL_AML1$s0)
+TEL_AML1_notzero=(TEL_AML1[order(TEL_AML1$abs,decreasing = T),])[1:20,]
+TEL_AML1_notzero$rel_impt=TEL_AML1_notzero$abs/sum(TEL_AML1_notzero$abs)
+TEL_AML1_20=(TEL_AML1_notzero[order(TEL_AML1_notzero$rel_impt,decreasing = T),])[1:20,]
+
+```
+#plotting top 20 predictors
+```{r}
+BCR_top20predictors<- ggplot(aes(x=reorder(row.names(BCR_20),rel_impt),y=rel_impt),data=BCR_20)+geom_col(fill="orange3",width = 0.5)+ylim(0.0,0.17)
+BCR_top20predictors+coord_flip()+labs(x="genes",y="Relative Importance",title="BCR vs others")
+
+```
+
+```{r}
+E2A_top20predictors<- ggplot(aes(x=reorder(row.names(E2A_20),rel_impt),y=rel_impt),data=E2A_20)+geom_col(fill="orange3",width = 0.5)+ylim(0.0,0.13)
+E2A_top20predictors+coord_flip()+labs(x="genes",y="Relative Importance",title="E2A vs others")
+
+```
+
+```{r}
+Hyperdip_top20predictors<- ggplot(aes(x=reorder(row.names(Hyperdip_20),rel_impt),y=rel_impt),data=Hyperdip_20)+geom_col(fill="orange3",width = 0.5)+ylim(0.0,0.10)+coord_flip()+labs(x="genes",y="Relative Importance",title="Hyperdip vs others")
+Hyperdip_top20predictors
+```
+
+```{r}
+MLL_top20predictors<- ggplot(aes(x=reorder(row.names(MLL_20),rel_impt),y=rel_impt),data=MLL_20)+geom_col(fill="purple3",width = 0.5)+ylim(0.0,0.15)
+MLL_top20predictors+coord_flip()+labs(x="genes",y="Relative Importance",title="MLL vs others")
+```
+
+```{r}
+T_ALL_top20predictors<- ggplot(aes(x=reorder(row.names(T_ALL_20),rel_impt),y=rel_impt),data=T_ALL_20)+geom_col(fill="purple3",width = 0.5)+ylim(0.0,0.12)
+T_ALL_top20predictors+coord_flip()+labs(x="genes",y="Relative Importance",title="T_ALL vs others")
+```
+
+```{r}
+TEL_AML1_top20predictors<- ggplot(aes(x=reorder(row.names(TEL_AML1_20),rel_impt),y=rel_impt),data=TEL_AML1_20)+geom_col(fill="purple3",width = 0.5)+ylim(0.0,0.14)
+TEL_AML1_top20predictors+coord_flip()+labs(x="genes",y="Relative Importance",title="TEL_AML1 vs others")
+```
+#predicting
+```{r}
+prediction=predict(fit,newx = x_standardize,type="class")
+table(prediction=prediction,reference=y)
+```
+#Top 20 genes from all of these 6 LASSO-LR models
+```{r}
+All_top20_genes=unique(rbind(as.matrix(BCR_20),as.matrix(T_ALL_20),as.matrix(TEL_AML1_20),as.matrix(Hyperdip_20),as.matrix(MLL_20),as.matrix(E2A_20)))
+genes=as.data.frame(All_top20_genes[,0])
+genes$names=rownames(genes)
+final_uniqueGenes=genes[!duplicated(genes[,"names"]),] #35 unique genes
+```
+
+```{r}
+BCR_35=BCR[rownames(BCR)%in%final_uniqueGenes,]
+TALL_35=T_ALL[rownames(T_ALL)%in%final_uniqueGenes,]
+TEL_35=TEL_AML1[rownames(TEL_AML1)%in%final_uniqueGenes,]
+Hyperdip_35=Hyperdip[rownames(Hyperdip)%in%final_uniqueGenes,]
+MLL_35=MLL[rownames(MLL)%in%final_uniqueGenes,]
+E2A_35=E2A[rownames(E2A)%in%final_uniqueGenes,]
+all_35=cbind(BCR_35,TALL_35,TEL_35,Hyperdip_35,MLL_35,E2A_35)
+even_indices=seq(2,12,2)
+all_35=all_35[,even_indices]
+all_35$sum=apply(all_35,1,sum)
+Top_20=(all_35[order(all_35$sum,decreasing = T),])[1:20,]
+Top_20genes=rownames(Top_20)
+Top_20genes
+```
+
+
+```{r}
+#with only 20genes
+x_20=x_standardize[,colnames(x_standardize)%in%Top_20genes]
+set.seed(123)
+cvfit_20=cv.glmnet(x_20, y, family="multinomial", type.multinomial = "grouped", parallel = TRUE,nfolds = 4,type.measure = "class",alpha = 1,standardize =FALSE)
+plot(cvfit_20)
+```
+
+```{r}
+cvfit_20$cvm[cvfit_20$lambda==cvfit$lambda.1se]
+fit_20<- glmnet(x_20, y, family="multinomial", type.multinomial = "grouped",alpha = 1,standardize = FALSE,lambda = cvfit_20$lambda.1se)
+```
+```{r}
+prediction_20=predict(fit_20,newx = x_20,type="class")
+table(prediction=prediction_20,reference=y)
+```
+
+
+
+
