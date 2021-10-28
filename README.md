@@ -2,5 +2,5 @@
 
 
 
-This folder contains all the R codes I have written as part of "Statiscal and Machine Learning" coursework. 
+This folder contains all the R codes I have written as part of "Statistical and Machine Learning" coursework. 
 These R scripts were written to be run on the Linux/Shell command line.
