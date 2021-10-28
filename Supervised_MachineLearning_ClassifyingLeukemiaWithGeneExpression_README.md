@@ -1,12 +1,12 @@
 # T1: Classification of Leukemia Samples based on 20 genes selected from the training data
-### Team members: Vylyny, Nagashree and Yue
+### Team members: Vylyny, XXX and XXX
 ### Model used: Lasso penalized logistic regression
 This Rscript outputs the predicted cell types for the held-out dataset using LASSO-LR and 20 most predictive genes.
 
 ### Inputs of the script:
 Example call:
 ```
-Rscript Team1_20genesClassifier.R Problem1_expressionMatrix.txt test_data.txt output_subtypesPrediction.txt
+Rscript Supervised_MachineLearning_ClassifyingLeukemiaWithGeneExpression.R Problem1_expressionMatrix.txt test_data.txt output_subtypesPrediction.txt
 ```
 **please note this script uses the given "Problem1_expressionMatrix.txt" to train the model, so this file is the train set and needs to be loaded along your test_data.txt to run the script.
 
