@@ -12,7 +12,7 @@ Rscript Team1_20genesClassifier.R Problem1_expressionMatrix.txt test_data.txt ou
 
 Both input files (train and test) have the same formats as shown in this image below (the six sample subtypes are the column names, while the rows of the input matrix are the genes.
 
-![Image of gene matrix](https://raw.githubusercontent.com/satijamlnyu/T1-1/master/Input_geneExpression_image.PNG?token=AJ2LGW26DMN2FHXJZVJCGIC5ZCHDW)
+![Input_geneExpression_image](https://user-images.githubusercontent.com/41202523/139178587-002ea265-fbf7-412b-847a-7ba1650898e3.PNG)
 
 ### Output of the script:
 
