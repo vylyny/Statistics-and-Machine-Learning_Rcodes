@@ -18,4 +18,4 @@ Both input files (train and test) have the same formats as shown in this image b
 
 This R script generates predicted subtypes for each sample in the test data  and output these predictions in a column as shown below:
 
-![Image of predicted cell types](https://raw.githubusercontent.com/satijamlnyu/T1-1/master/output_example.PNG?token=AJ2LGW5FAJERDYXY5XE547S5ZCHS4)
+![output_example](https://user-images.githubusercontent.com/41202523/139178690-00c7362a-60cf-4396-9ae4-dbeb1e6f0171.PNG)
