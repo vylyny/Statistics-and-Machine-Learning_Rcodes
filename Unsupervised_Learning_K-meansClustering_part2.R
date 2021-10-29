@@ -46,3 +46,5 @@ final_cluster=best_clusters[min] #the index of best cluster corresponds to the i
 write.table(final_cluster,file=args[2],row.names = F,col.names = F,quote = F)
 write.table(min(obj_function),file=args[2],row.names = F,col.names = F,quote = F,append = T)
 
+
+
