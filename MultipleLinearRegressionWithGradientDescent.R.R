@@ -30,6 +30,3 @@ final_RSS=sum((results-y)^2) #checking final RSS against the answer key
 cat("final_RSS is: ", final_RSS) #looks good
 cat("Thank you! Have a nice day...")
 write.table(results,file=args[5],col.names=FALSE,row.names=FALSE) #write out the results of predicted y
-
-
-
