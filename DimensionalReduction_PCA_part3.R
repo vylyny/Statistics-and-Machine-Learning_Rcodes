@@ -39,6 +39,5 @@ while (i < 4){
   out[i]=variance
   i=i+1
 } 
-
 #---------write out the total variance of PC1,PC2 and PC3
 write.table(out,file=args[3],row.names=F,col.names=F,quote=F)
