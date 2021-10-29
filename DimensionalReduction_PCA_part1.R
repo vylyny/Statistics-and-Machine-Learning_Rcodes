@@ -25,3 +25,5 @@ results=sum(var_each)
 
 #write out the total variance
 write.table(results,file=args[3],row.names=F,col.names=F,quote=F)
+
+
