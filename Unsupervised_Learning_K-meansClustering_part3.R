@@ -66,3 +66,5 @@ FINALobj_function=mean(apply(euclid(data,centroid),1,min)) #calculate final obj_
 write.table(final_clusters,file=args[2],row.names = F,col.names = F,quote = F)
 write.table(FINALobj_function,file=args[2],row.names = F,col.names = F,quote = F,append = T)
 
+
+
