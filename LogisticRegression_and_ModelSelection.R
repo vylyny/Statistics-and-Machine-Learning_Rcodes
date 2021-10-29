@@ -68,5 +68,3 @@ while (iteration < 50){
 results=cbind(iteration_count,selected,CV.error.5,max_LL)
 colnames(results)=c("Iteration","Predictor","CV","Log.Likelihood")
 write.table(results,file=args[2],row.names = FALSE,col.names = TRUE,quote = FALSE)
-
-
