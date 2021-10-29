@@ -33,3 +33,4 @@ obj_function=mean(apply(Eucli_distance,1,min)) #calculating the objective functi
 write.table(clusters_new,file=args[3],row.names = F,col.names = F,quote = F)
 write.table(obj_function,file=args[3],row.names = F,col.names = F,quote = F,append = T)
 cat("Done-part I! Thank you!! \n")
+
