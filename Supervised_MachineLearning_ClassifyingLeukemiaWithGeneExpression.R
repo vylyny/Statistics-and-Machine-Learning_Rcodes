@@ -55,3 +55,5 @@ Names=matrix(c("Sample_Number","Predicted_Cell_Type"),nrow=1,ncol = 2)
 write.table(Names,file=args[3],quote = F,col.names = F,row.names = F)
 write.table(prediction_20,file=args[3],quote = F,col.names = F,row.names = T,append = T)
 cat("Done! Thank you...\n")
+
+
