@@ -1,4 +1,4 @@
-# Statistical_Machine_Learning_Course_Rscripting
+# Statistics And Machine Learning_Rcodes
 
 
 
